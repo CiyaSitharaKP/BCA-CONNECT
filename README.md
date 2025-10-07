@@ -58,6 +58,8 @@ BCA CONNECT is a full-stack academic management system built entirely with Pytho
 - Database :	MySQL
 - IDE :	Visual Studio Code
 - OS :	Windows 8 or above
+
+  
 💻 Hardware Requirements
 - Processor: Intel Core i3 or above
 
@@ -74,12 +76,16 @@ BCA CONNECT is a full-stack academic management system built entirely with Pytho
 
 
 git clone https://github.com/yourusername/bca-connect.git
+
+
 cd bca-connect
 
 - Create virtual environment
 
 
 python -m venv venv
+
+
 venv\Scripts\activate  # On Windows
 
 - Install dependencies
@@ -89,12 +95,15 @@ pip install -r requirements.txt
 
 - Configure database
 
-- Update settings.py with your MySQL credentials
+
+ Update settings.py with your MySQL credentials
 
 Run migrations:
 
 
 python manage.py makemigrations
+
+
 python manage.py migrate
 
 - Create superuser
@@ -106,6 +115,9 @@ python manage.py createsuperuser
 
 
 python manage.py runserver
+
+
+
 📈 Future Enhancements
 - Bulk data import/export for academic records
 
