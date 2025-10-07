@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff - Profile</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+      }
+
+      .navbar {
+        background: #003135;
+        z-index: 1000;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 40px;
+        left: 0;
+        width: 230px;
+        height: calc(100% - 40px);
+        background: #136163;
+        color: #fff;
+        overflow-y: auto;
+        padding-top: 15px;
+      }
+      .sidebar .nav-link {
+        color: #e0ffff;
+      }
+      .sidebar .nav-link:hover {
+        color: #fff;
+        background: #188c96ff;
+        scale: 1.03;
+      }
+      .active {
+        border-left: 10px solid #93b1b5;
+        color: white;
+      }
+      .content {
+        margin-left: 250px;
+        margin-top: 70px;
+        padding: 20px;
+        background-color: #f8f9fa;
+        min-height: 100vh;
+      }
+      .content img {
+        height: 150px;
+        width: auto;
+        border-radius: 50%;
+        display: block;
+        margin: 0 auto 20px;
+      }
+      h2 {
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 25px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold">BCA Connect - Staff</a>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/logout/">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="sidebar">
+      <nav class="nav flex-column">
+        <a class="nav-link" href="/staff_welcome/">Home</a>
+
+        <a
+          class="nav-link active"
+          aria-current="page"
+          href="/staff_view_profile/"
+          >My Profile</a
+        >
+
+        <a class="nav-link" href="/staff_view_subject/">My Subjects</a>
+
+        <a
+          class="nav-link"
+          data-bs-toggle="collapse"
+          href="#notesMenu"
+          role="button"
+          >Study Materials</a
+        >
+        <div class="collapse" id="notesMenu">
+          <a class="nav-link ms-3" href="/staff_add_notes/"
+            >Add Study Materials</a
+          >
+          <a class="nav-link ms-3" href="/staff_view_notes/"
+            >View Study Materials</a
+          >
+        </div>
+
+        <a
+          class="nav-link"
+          data-bs-toggle="collapse"
+          href="#assignmentsMenu"
+          role="button"
+          >Assignments</a
+        >
+        <div class="collapse" id="assignmentsMenu">
+          <a class="nav-link ms-3" href="/staff_add_assignments/"
+            >Add Assignments</a
+          >
+          <a class="nav-link ms-3" href="/staff_view_assignments/"
+            >View Assignments</a
+          >
+        </div>
+
+        <a
+          class="nav-link"
+          data-bs-toggle="collapse"
+          href="#examsMenu"
+          role="button"
+          >Exams</a
+        >
+        <div class="collapse" id="examsMenu">
+          <a class="nav-link ms-3" href="/staff_add_exams/">Add Exams</a>
+          <a class="nav-link ms-3" href="/staff_view_exams/">View Exams</a>
+        </div>
+
+        <a
+          class="nav-link"
+          data-bs-toggle="collapse"
+          href="#resultMenu"
+          role="button"
+          >Results</a
+        >
+        <div class="collapse" id="resultMenu">
+          <a class="nav-link ms-3" href="/staff_add_results/">Add Results</a>
+          <a class="nav-link ms-3" href="/staff_view_results/">View Results</a>
+        </div>
+
+        <a class="nav-link" href="/staff_view_feedback/">Feedback and Queries</a>
+
+        <a class="nav-link" href="/staff_view_student/">Student Performance</a>
+
+        <a class="nav-link" href="/staff_get_reports/">Subject Reports</a>
+      </nav>
+    </div>
+
+    <div class="content">
+      <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+          <h2>My profile</h2>
+          <img src="{{ data.photo.url }}" alt="{{ data.name }}" />
+          <div class="card-body">
+            <p><strong>Name : </strong>{{ data.name }}</p>
+            <p><strong>Mail ID : </strong>{{ data.email }}</p>
+            <p><strong>Designation : </strong>{{ data.design }}</p>
+            <p><strong>Date of Birth : </strong>{{ data.dob|date:'Y-m-d' }}</p>
+            <p><strong>Gender : </strong>{{ data.gender }}</p>
+            <p><strong>Phone No : </strong>{{ data.phoneno }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
