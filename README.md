@@ -98,7 +98,7 @@ pip install -r requirements.txt
 
  Update settings.py with your MySQL credentials
 
-Run migrations:
+- Run migrations:
 
 
 python manage.py makemigrations
