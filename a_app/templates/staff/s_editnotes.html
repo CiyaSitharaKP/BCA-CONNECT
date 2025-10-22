@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>BCA Connect - Study Materials</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  {% comment %} <!-- Favicons -->
+  <link href="/static/College/assets/img/favicon.png" rel="icon">
+  <link href="/static/College/assets/img/apple-touch-icon.png" rel="apple-touch-icon"> {% endcomment %}
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/College/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/College/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/College/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/College/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/static/College/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/static/College/assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: College
+  * Template URL: https://bootstrapmade.com/college-bootstrap-education-template/
+  * Updated: Jun 19 2025 with Bootstrap v5.3.6
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-center">
+
+      
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="/staff_welcome/" >Home</a></li>
+          <li class="dropdown"><a href="#" ><span>Subjects</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_view_subject/">View Subjects</a></li>
+              <li><a href="/staff_get_reports/">Export Subject Reports</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#" class="active"><span>Study Materials</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_notes/">Add Study Materials</a></li>
+              <li><a href="/staff_view_notes/">View Study Materials</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Assignments</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_assignments/">Add Assignments</a></li>
+              <li><a href="/staff_view_assignments/">View Assignments</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Exams</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_exams/">Add Exams</a></li>
+              <li><a href="/staff_view_exams/">View Exams</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Results</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_results/">Add Results</a></li>
+              <li><a href="/staff_view_results/">View Results</a></li>
+            </ul>
+          </li>
+          <li><a href="/staff_view_feedback/"  > Feedback and Queries</a></li>
+          <li class="dropdown"><a href="#"><span>Student Attendance</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_attendance/">Add Attendance</a></li>
+              <li><a href="/staff_view_attendance/">View Attendance</a></li>
+            </ul>
+          </li>
+          <li><a href="/staff_view_student/">Student Performance</a></li>
+          <li class="dropdown"><a href="#"><span style="font-weight: 900;">{{ ob.name }}</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_view_profile/">View Profile</a></li>
+              <li><a href="/logout/">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="main">
+      <!-- Stats Section -->
+      <section id="stats" class="stats section">
+
+        <div class="container section-title" data-aos="fade-up">
+        <h2>Edit Study Materials</h2>
+      </div><!-- End Section Title -->
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+          <div class="row justify-content-center">
+            <div class="col-lg-8 text-start">
+              <form method="post" enctype="multipart/form-data" >
+                {% csrf_token %}
+
+                <div class="row mb-2">
+                  <div class="col">
+                <h5 class="form-label">Semester :</h5>
+                <select class="form-control mb-3    " name="sem" id="sem-select" required>
+                  <option value="">-- Select Semester --</option>
+                  {% for s in semesters %}
+                    <option value="{{ s.id }}" {% if data.SUBJECT.SEM.id == s.id %}selected{% endif %}>
+                      {{ s.sem }}
+                    </option>
+                  {% endfor %}
+                </select>
+                  </div>
+                  <div class="col">
+                <h5 class="form-label">Subject :</h5>
+                <select class="form-control mb-3   " name="sub" id="subject-select" required>
+                  <option value="">-- Select Subject --</option>
+                  {% for s in subjects %}
+                    <option value="{{ s.id }}" {% if data.SUBJECT.id == s.id %}selected{% endif %}>
+                      {{ s.code }} - {{ s.name }}
+                    </option>
+                  {% endfor %}
+                </select>
+                  </div>
+                </div>
+
+                <div class="row mb-2">
+                  <div class="col">
+                <h5 class="form-label">File :</h5>
+                <input type="file" class="form-control mb-3   "  name="file" >
+                <p>Already uploaded: 
+                  <a href="{{ data.file.url }}" target="_blank">{{ data.file.name }}</a>
+                </p>
+                  </div>
+                  <div class="col">
+                <h5 class="form-label">Content :</h5>
+                <input type="text" class="form-control mb-3   " name="topic" value="{{ data.topic }}" placeholder="Subject Topics" required>
+                  </div>
+                </div>
+                
+                <button type="submit" class="btn btn-success">Update</button><br>
+                <a href="/staff_view_notes/" class="btn btn-secondary mb-3 mt-3">← Back to Notes</a>
+              </form>
+
+
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- /Stats Section -->
+    </main>
+
+  <footer id="footer" class="footer position-relative light-background">
+
+  <div class="container footer-top">
+    <div class="row gy-4">
+
+      <!-- About BCA Connect -->
+      <div class="col-lg-4 col-md-6 footer-about">
+        <a href="/" class="logo d-flex align-items-center">
+          <span class="sitename">BCA Connect</span>
+        </a>
+        <div class="footer-contact pt-3">
+          <p>Department of Computer Applications</p>
+          <p>XYZ College, Calicut, Kerala</p>
+          <p class="mt-3"><strong>Support:</strong> <span>+91 98765 43210</span></p>
+          <p><strong>Email:</strong> <span>studenthelp@bcaconnect.in</span></p>
+        </div>
+        <div class="social-links d-flex mt-4">
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-lg-2 col-md-3 footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="/staff_welcome/">Dashboard</a></li>
+          <li><a href="/staff_view_feedback/">Feedback</a></li>
+        </ul>
+      </div>
+
+      <!-- Learning Resources -->
+      <div class="col-lg-2 col-md-3 footer-links">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="/staff_view_notes/">Study Materials</a></li>
+          <li><a href="/staff_view_assignments/">Assignments</a></li>
+          <li><a href="/staff_view_exams/">Exam Schedule</a></li>
+          <li><a href="/staff_view_results/">Results</a></li>
+          <li><a href="/staff_view_attendance/">Attendance</a></li>
+        </ul>
+      </div>
+
+      <!-- Staff Support -->
+      <div class="col-lg-2 col-md-3 footer-links">
+        <h4>Staff Support</h4>
+        <ul>
+          <li><a href="/staff_view_profile/">My Profile</a></li>
+          <li><a href="#">Help & FAQs</a></li>
+          <li><a href="/logout/">Logout</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="container copyright text-center mt-4">
+    <p>© <strong class="px-1 sitename">BCA Connect</strong> | Empowering Students, One Click at a Time</p>
+    <div class="credits">
+      Built  by the Department of Computer Applications, XYZ College
+    </div>
+  </div>
+
+</footer>
+
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/College/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/College/assets/vendor/php-email-form/validate.js"></script>
+  <script src="/static/College/assets/vendor/aos/aos.js"></script>
+  <script src="/static/College/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/College/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="/static/College/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="/static/College/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/College/assets/vendor/glightbox/js/glightbox.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="/static/College/assets/js/main.js"></script>
+
+    <script>
+  $(document).ready(function () {
+    $('#sem-select').on('change', function () {
+  var semId = $(this).val();
+  var subjectSelect = $('#subject-select');
+  subjectSelect.empty().append('<option>Loading...</option>');
+
+  if (semId) {
+    $.ajax({
+      url: '/get_subjects_by_semester_notes',
+      data: { sem_id: semId },
+      success: function (data) {
+        subjectSelect.empty().append('<option value="">-- Select Subject --</option>');
+        $.each(data, function (index, subject) {
+          subjectSelect.append('<option value="' + subject.id + '">' + subject.name + '</option>');
+        });
+      }
+    });
+  } else {
+    subjectSelect.empty().append('<option value="">-- Select Subject --</option>');
+  }
+});
+
+  });
+</script>
+
+
+
+
+</body>
+
+</html>

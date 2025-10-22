@@ -1,41 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BCA Connect</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <style>
-    #body {
-  background-image: url("/static/bg.jpg");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-repeat: no-repeat;
-}
+    body {
+      background-color: #9A616D;
+    }
+ .form-floating i {
+      position: absolute;
+      top: 18px;
+      left: 15px;
+      color: #888;
+    }
 
+    .form-control {
+      padding-left: 2.5rem;
+    }
+    .input-group-custom {
+    position: relative;
+  }
+
+  .input-group-custom i {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  .input-group-custom .form-control {
+    padding-left: 2.5rem; 
+    z-index: 1;
+  }
+
+  .form-floating label {
+    padding-left: 2.5rem; 
+  }
+    
   </style>
 </head>
-<body >
-<div class=" d-flex justify-content-start align-items-center vh-100  " id="body">
-  <div class="card p-5 rounded-4 " style="width: 400px;background: transparent;border: none;margin-left: 100px;">
-    <h1 class="text-center mb-4 " style="font-weight: bolder;color: grey;">BCA Connect</h1>
+<body>
+<section class="vh-1000" >
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col col-xl-10">
+        <div class="card" style="border-radius: 1rem;">
+          <div class="row g-0">
+            <div class="col-md-6 col-lg-5 d-none d-md-block">
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/img1.webp"
+                alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+            </div>
+            <div class="col-md-6 col-lg-7 d-flex align-items-center">
+              <div class="card-body p-4 p-lg-5 text-black">
 
-    <form method="post">
-        {% csrf_token %}
-    <div class="form-floating mb-3">
-      <input type="text" id="username" class="form-control bg-light" placeholder="Username" name="username" >
-      <label for="username">Username</label>
+                <form method="post">
+                  {% csrf_token %}
+
+                  <div class="d-flex align-items-center mb-3 pb-1">
+                    <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
+                    <span class="h1 fw-bold mb-0">BCA CONNECT</span>
+                  </div>
+
+                  <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
+                  
+                  <div class="input-group-custom form-floating mb-3">
+                    <i class="fa fa-user"></i>
+                    <input type="text" id="username" class="form-control form-control-lg" placeholder="Email address" name="username" />
+                    <label  for="username">Email address</label>
+                  </div>
+
+                  <div class="input-group-custom form-floating mb-3">
+                    <i class="fa fa-lock"></i>
+                    <input type="password" id="password" class="form-control form-control-lg" placeholder="Password" name="password"  />
+                    <label  for="password">Password</label>
+                  </div>
+
+                  <div class="pt-1 mb-4">
+                    <button  class="btn btn-dark btn-lg btn-block" type="submit">Login</button>
+                  </div>
+
+                  <a class="small text-muted" href="#!">Forgot password?</a>
+                  <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account? <a href="#!"
+                      style="color: #393f81;">Register here</a></p>
+                  <a href="#!" class="small text-muted">Terms of use.</a>
+                  <a href="#!" class="small text-muted">Privacy policy</a>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="form-floating mb-3">
-      <input type="password" id="password" class="form-control bg-light" placeholder="Password" name="password">
-      <label for="password">Password</label>
-    </div>
-
-    <button class="btn btn-secondary w-100">Login</button>
-    </form>
   </div>
-</div>
+</section>
+
+
 </body>
 </html>

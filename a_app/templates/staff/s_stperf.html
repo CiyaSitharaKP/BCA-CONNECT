@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>BCA Connect - Student Performance</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/College/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/College/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/College/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/College/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/static/College/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/static/College/assets/css/main.css" rel="stylesheet">
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body class="index-page">
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-center">
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="/staff_welcome/">Home</a></li>
+          <li class="dropdown"><a href="#"><span>Subjects</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_view_subject/">View Subjects</a></li>
+              <li><a href="/staff_get_reports/">Export Subject Reports</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Study Materials</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_notes/">Add Study Materials</a></li>
+              <li><a href="/staff_view_notes/">View Study Materials</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Assignments</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_assignments/">Add Assignments</a></li>
+              <li><a href="/staff_view_assignments/">View Assignments</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Exams</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_exams/">Add Exams</a></li>
+              <li><a href="/staff_view_exams/">View Exams</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Results</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_results/">Add Results</a></li>
+              <li><a href="/staff_view_results/">View Results</a></li>
+            </ul>
+          </li>
+          <li><a href="/staff_view_feedback/">Feedback and Queries</a></li>
+          <li class="dropdown"><a href="#"><span>Student Attendance</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_attendance/">Add Attendance</a></li>
+              <li><a href="/staff_view_attendance/">View Attendance</a></li>
+            </ul>
+          </li>
+          <li><a href="/staff_view_student/" class="active">Student Performance</a></li>
+          <li class="dropdown"><a href="#"><span style="font-weight: 900;">{{ ob.name }}</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_view_profile/">View Profile</a></li>
+              <li><a href="/logout/">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+    </div>
+  </header>
+  <!-- End Header -->
+
+  <main class="main">
+    <section id="featured-programs" class="featured-programs section">
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Student Performance</h2>
+      </div>
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row justify-content-center">
+          <div class="col-lg-10 text-start">
+
+            <form method="post">
+              {% csrf_token %}
+              <div class="row mb-2">
+                <div class="col">
+                  <h5 class="form-label">Semester :</h5>
+                  <select class="form-control mb-3" name="sem" id="sem-select" required>
+                    <option value="">-- Select Semester --</option>
+                    {% for s in semesters %}
+                      <option value="{{ s.id }}">S{{ s.SEM.sem }} {{ s.YEAR.year }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col">
+                  <h5 class="form-label">Student :</h5>
+                  <select class="form-control mb-3" name="student" id="st-select" required>
+                    <option value="">-- Select Student --</option>
+                  </select>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-success mb-3">Show Details</button>
+            </form>
+
+            {% if selected_student %}
+            <div class="card mb-4 shadow-sm" id="performance-card" >
+              <div class="card-body">
+                <h4 class="mb-3">Performance of {{ selected_student.name }} (Roll No: {{ selected_student.rollno }})</h4>
+                <p><strong>Semester:</strong> {{ selected_semester.SEM.sem }}</p>
+                <p><strong>Academic Year:</strong> {{ selected_semester.YEAR.year }}</p>
+
+                <h5 class="mt-4">Subjects</h5>
+                <ul class="list-group mb-3">
+                  {% for subject in subjects %}
+                    <li class="list-group-item">{{ subject.name }} ({{ subject.code }})</li>
+                  {% empty %}
+                    <li class="list-group-item">No subjects found.</li>
+                  {% endfor %}
+                </ul>
+
+                <h5 class="mt-4">Internal Exam Results</h5>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Exam</th>
+                      <th>Subject</th>
+                      <th>Marks</th>
+                      <th>Remarks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for r in internal_results %}
+                      <tr>
+                        <td>{{ r.EXAM.title }}</td>
+                        <td>{{ r.EXAM.SUBJECT.name }}</td>
+                        <td>{{ r.marks }}</td>
+                        <td>{{ r.remarks }}</td>
+                      </tr>
+                    {% empty %}
+                      <tr><td colspan="4">No internal exam results available.</td></tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+                <h5 class="mt-4">Monthly Exam Results</h5>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Exam</th>
+                      <th>Subject</th>
+                      <th>Marks</th>
+                      <th>Remarks</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for r in regular_results %}
+                      <tr>
+                        <td>{{ r.EXAM.title }}</td>
+                        <td>{{ r.EXAM.SUBJECT.name }}</td>
+                        <td>{{ r.marks }}</td>
+                        <td>{{ r.remarks }}</td>
+                      </tr>
+                    {% empty %}
+                      <tr><td colspan="4">No monthly exam results available.</td></tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+                <h5 class="mt-4">Assignments Submitted</h5>
+                <ul class="list-group mb-3">
+                  {% for a in assignments %}
+                    <li class="list-group-item">{{ a.ASSIGN.title }} - {{ a.ASSIGN.SUBJECT.name }} (Submitted on {{ a.created_at }})</li>
+                  {% empty %}
+                    <li class="list-group-item">No assignments submitted.</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </section>
+
+   {% if submitted %}
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const perfCard = document.getElementById('performance-card');
+    if (perfCard) {
+      setTimeout(() => {
+        perfCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 500); 
+    }
+  });
+</script>
+{% endif %}
+
+
+  </main>
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer position-relative light-background">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="/" class="logo d-flex align-items-center">
+            <span class="sitename">BCA Connect</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>Department of Computer Applications</p>
+            <p>XYZ College, Calicut, Kerala</p>
+            <p class="mt-3"><strong>Support:</strong> <span>+91 98765 43210</span></p>
+            <p><strong>Email:</strong> <span>studenthelp@bcaconnect.in</span></p>
+          </div>
+          <div class="social-links d-flex mt-4">
+            <a href="#"><i class="bi bi-instagram"></i></a>
+            <a href="#"><i class="bi bi-linkedin"></i></a>
+            <a href="#"><i class="bi bi-youtube"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="/staff_welcome/">Dashboard</a></li>
+            <li><a href="/staff_view_feedback/">Feedback</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="/staff_view_notes/">Study Materials</a></li>
+            <li><a href="/staff_view_assignments/">Assignments</a></li>
+            <li><a href="/staff_view_exams/">Exam Schedule</a></li>
+            <li><a href="/staff_view_results/">Results</a></li>
+            <li><a href="/staff_view_attendance/">Attendance</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Staff Support</h4>
+          <ul>
+            <li><a href="/staff_view_profile/">My Profile</a></li>
+            <li><a href="#">Help & FAQs</a></li>
+            <li><a href="/logout/">Logout</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <strong class="px-1 sitename">BCA Connect</strong> | Empowering Students, One Click at a Time</p>
+      <div class="credits">Built by the Department of Computer Applications, XYZ College</div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/College/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/College/assets/vendor/aos/aos.js"></script>
+  <script src="/static/College/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/College/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="/static/College/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="/static/College/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/College/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/College/assets/js/main.js"></script>
+
+  <!-- AJAX Student Fetch -->
+  <script>
+    $(document).ready(function () {
+      $('#sem-select').on('change', function () {
+        var semId = $(this).val();
+        if (semId) {
+          $.ajax({
+            url: '/get_students_by_semester/',
+            data: { sem_id: semId },
+            success: function (data) {
+              var stSelect = $('#st-select');
+              stSelect.empty().append('<option value="">-- Select Student --</option>');
+              $.each(data, function (index, st) {
+                stSelect.append('<option value="' + st.id + '">' + st.name + '</option>');
+              });
+            }
+          });
+        } else {
+          $('#st-select').empty().append('<option value="">-- Select Student --</option>');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

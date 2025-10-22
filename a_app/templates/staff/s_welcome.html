@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>BCA Connect - Home</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  {% comment %} <!-- Favicons -->
+  <link href="/static/College/assets/img/favicon.png" rel="icon">
+  <link href="/static/College/assets/img/apple-touch-icon.png" rel="apple-touch-icon"> {% endcomment %}
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/College/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/College/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/College/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/College/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="/static/College/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="/static/College/assets/css/main.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: College
+  * Template URL: https://bootstrapmade.com/college-bootstrap-education-template/
+  * Updated: Jun 19 2025 with Bootstrap v5.3.6
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-center">
+
+      
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="/staff_welcome/" class="active">Home</a></li>
+          <li class="dropdown"><a href="#"><span>Subjects</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_view_subject/">View Subjects</a></li>
+              <li><a href="/staff_get_reports/">Export Subject Reports</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Study Materials</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_notes/">Add Study Materials</a></li>
+              <li><a href="/staff_view_notes/">View Study Materials</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Assignments</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_assignments/">Add Assignments</a></li>
+              <li><a href="/staff_view_assignments/">View Assignments</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Exams</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_exams/">Add Exams</a></li>
+              <li><a href="/staff_view_exams/">View Exams</a></li>
+            </ul>
+          </li>
+          <li class="dropdown"><a href="#"><span>Results</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_results/">Add Results</a></li>
+              <li><a href="/staff_view_results/">View Results</a></li>
+            </ul>
+          </li>
+          <li><a href="/staff_view_feedback/"  > Feedback and Queries</a></li>
+          <li class="dropdown"><a href="#"><span>Student Attendance</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_add_attendance/">Add Attendance</a></li>
+              <li><a href="/staff_view_attendance/">View Attendance</a></li>
+            </ul>
+          </li>
+          <li><a href="/staff_view_student/">Student Performance</a></li>
+          <li class="dropdown"><a href="#"><span style="font-weight: 900;">{{ ob.name }}</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="/staff_view_profile/">View Profile</a></li>
+              <li><a href="/logout/">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section">
+
+      <div class="hero-wrapper">
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-6 hero-content" data-aos="fade-right" data-aos-delay="100">
+              <h1>Inspiring Excellence Through Education</h1>
+              <p>Welcome to BCA Connect—your digital gateway to learning, growth, and innovation. Whether you're debugging your first program or leading a tech initiative, this platform is built to support your journey every step of the way.</p>
+              <div class="stats-row">
+                <div class="stat-item">
+                  <span class="stat-number">96%</span>
+                  <span class="stat-label">Employment Rate</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number">12:1</span>
+                  <span class="stat-label">Student-Teacher Ratio</span>
+                </div>
+                <div class="stat-item">
+                  <span class="stat-number">50+</span>
+                  <span class="stat-label">Programs</span>
+                </div>
+              </div>
+              <div class="action-buttons">
+                <a href="#" class="btn-primary">Start Your Journey</a>
+                <a href="#" class="btn-secondary">Virtual Tour</a>
+              </div>
+            </div>
+            <div class="col-lg-6 hero-media" data-aos="zoom-in" data-aos-delay="200">
+              <img src="/static/clg.jpeg" alt="Education" class="img-fluid main-image">
+              <div class="image-overlay">
+                <div class="badge-accredited">
+                  <i class="bi bi-patch-check-fill"></i>
+                  <span>Accredited Excellence</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-cards-wrapper" data-aos="fade-up" data-aos-delay="300">
+        <div class="container">
+          <div class="row gy-4">
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <i class="bi bi-book-fill"></i>
+                </div>
+                <div class="feature-content">
+                  <h3>Innovative Curriculum</h3>
+                  <p>Designed to spark creativity and equip you with real-world tech skills from day one.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+              <div class="feature-card active">
+                <div class="feature-icon">
+                  <i class="bi bi-laptop-fill"></i>
+                </div>
+                <div class="feature-content">
+                  <h3>Modern Facilities</h3>
+                  <p>Empowering your learning with cutting-edge labs, smart classrooms, and seamless digital access.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+              <div class="feature-card">
+                <div class="feature-icon">
+                  <i class="bi bi-people-fill"></i>
+                </div>
+                <div class="feature-content">
+                  <h3>Expert Faculty</h3>
+                  <p>Guided by mentors who blend academic excellence with industry insight to shape your future.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="upcoming-event" data-aos="fade-up" data-aos-delay="400">
+        <div class="container">
+          <div class="event-content">
+            <div class="event-date">
+              <span class="day">15</span>
+              <span class="month">NOV</span>
+            </div>
+            <div class="event-info">
+              <h3>Spring Semester Open House</h3>
+              <p>Join us to explore campus facilities, meet our faculty, and learn about scholarship opportunities.</p>
+            </div>
+            <div class="event-action">
+              <a href="#" class="btn-event">REGISTER NOW</a>
+              <span class="countdown">Starts in 3 weeks</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section><!-- /Hero Section -->
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row align-items-center g-5">
+          <div class="col-lg-6">
+            <div class="about-content" data-aos="fade-up" data-aos-delay="200">
+              <h3>Our Story</h3>
+              <h2>Educating Minds, Inspiring Hearts</h2>
+              <p>Rooted in tradition and driven by innovation, our college has been shaping bright minds since its founding. With a commitment to excellence in education and character, we continue to empower students to lead, create, and thrive.</p>
+
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <h4>1965</h4>
+                    <p>College established with a focus on foundational sciences</p>
+                  </div>
+                </div>
+
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <h4>1982</h4>
+                    <p>Expanded into professional and technical programs</p>
+                  </div>
+                </div>
+
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <h4>1998</h4>
+                    <p>Introduced BCA and other IT-focused courses</p>
+                  </div>
+                </div>
+
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <h4>2015</h4>
+                    <p>Upgraded campus with smart classrooms and digital labs</p>
+                  </div>
+                </div>
+
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <div class="timeline-content">
+                    <h4>2025</h4>
+                    <p>Launched BCA Connect to unify academic access and engagement</p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="about-image" data-aos="zoom-in" data-aos-delay="300">
+              <img src="/static/College/assets/img/education/campus-5.webp" alt="Campus" class="img-fluid rounded">
+
+              <div class="mission-vision" data-aos="fade-up" data-aos-delay="400">
+                <div class="mission">
+                  <h3>Our Mission</h3>
+                  <p>To provide holistic education that blends academic rigor with real-world relevance, fostering responsible, skilled, and forward-thinking graduates.</p>
+                </div>
+
+                <div class="vision">
+                  <h3>Our Vision</h3>
+                  <p>To be a center of excellence in higher education, inspiring innovation, integrity, and lifelong learning in every student.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-5">
+          <div class="col-lg-12">
+            <div class="core-values" data-aos="fade-up" data-aos-delay="500">
+              <h3 class="text-center mb-4">Core Values</h3>
+              <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                <div class="col">
+                  <div class="value-card">
+                    <div class="value-icon">
+                      <i class="bi bi-book"></i>
+                    </div>
+                    <h4>Academic Excellence</h4>
+                    <p>We foster a culture of rigorous learning, critical thinking, and continuous improvement to help students reach their highest potential.</p>
+                  </div>
+                </div>
+
+                <div class="col">
+                  <div class="value-card">
+                    <div class="value-icon">
+                      <i class="bi bi-people"></i>
+                    </div>
+                    <h4>Community Engagement</h4>
+                    <p>We believe in building strong connections—on campus and beyond—through service, collaboration, and shared responsibility.</p>
+                  </div>
+                </div>
+
+                <div class="col">
+                  <div class="value-card">
+                    <div class="value-icon">
+                      <i class="bi bi-lightbulb"></i>
+                    </div>
+                    <h4>Innovation</h4>
+                    <p>We encourage curiosity and creativity, empowering students to explore new ideas and develop solutions for real-world challenges.</p>                  </div>
+                </div>
+
+                <div class="col">
+                  <div class="value-card">
+                    <div class="value-icon">
+                      <i class="bi bi-globe"></i>
+                    </div>
+                    <h4>Global Perspective</h4>
+                    <p>We prepare students to thrive in a connected world by embracing diversity, global awareness, and cross-cultural understanding.</p>                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    <!-- /About Section -->
+
+
+
+    
+    <!-- Stats Section -->
+    <section id="stats" class="stats section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center">
+            <div class="intro-content" data-aos="fade-up" data-aos-delay="200">
+              <h2 class="section-heading">Transforming Lives Through Quality Education</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4 mt-4">
+          <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="metric-card" data-aos="flip-left" data-aos-delay="300">
+              <div class="metric-header">
+                <div class="metric-icon-wrapper">
+                  <i class="bi bi-mortarboard-fill"></i>
+                </div>
+                <div class="metric-value">
+                  <span data-purecounter-start="0" data-purecounter-end="87" data-purecounter-duration="1" class="purecounter"></span>%
+                </div>
+              </div>
+              <div class="metric-info">
+                <h4>Success Rate</h4>
+                <p>Alumni employment within 6 months</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="metric-card" data-aos="flip-left" data-aos-delay="400">
+              <div class="metric-header">
+                <div class="metric-icon-wrapper">
+                  <i class="bi bi-building"></i>
+                </div>
+                <div class="metric-value">
+                  <span data-purecounter-start="0" data-purecounter-end="8" data-purecounter-duration="1" class="purecounter"></span>
+                </div>
+              </div>
+              <div class="metric-info">
+                <h4>Campus Locations</h4>
+                <p>Across the country serving students</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="metric-card" data-aos="flip-left" data-aos-delay="500">
+              <div class="metric-header">
+                <div class="metric-icon-wrapper">
+                  <i class="bi bi-trophy-fill"></i>
+                </div>
+                <div class="metric-value">
+                  <span data-purecounter-start="0" data-purecounter-end="250" data-purecounter-duration="1" class="purecounter"></span>+
+                </div>
+              </div>
+              <div class="metric-info">
+                <h4>Awards Received</h4>
+                <p>Recognition for educational excellence</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-3 col-lg-6 col-md-6">
+            <div class="metric-card" data-aos="flip-left" data-aos-delay="600">
+              <div class="metric-header">
+                <div class="metric-icon-wrapper">
+                  <i class="bi bi-globe"></i>
+                </div>
+                <div class="metric-value">
+                  <span data-purecounter-start="0" data-purecounter-end="65" data-purecounter-duration="1" class="purecounter"></span>+
+                </div>
+              </div>
+              <div class="metric-info">
+                <h4>Countries Represented</h4>
+                <p>Diverse international student body</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-5">
+          <div class="col-lg-12">
+            <div class="highlights-section" data-aos="fade-up" data-aos-delay="700">
+              <div class="row align-items-center">
+                <div class="col-lg-6">
+                  <div class="highlights-content">
+                    <h3 class="highlights-title">Building Tomorrow's Leaders Today</h3>
+                    <p class="highlights-text">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim.</p>
+                    <div class="highlights-features">
+                      <div class="feature-item" data-aos="fade-right" data-aos-delay="800">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Innovative curriculum design</span>
+                      </div>
+                      <div class="feature-item" data-aos="fade-right" data-aos-delay="900">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>World-class faculty expertise</span>
+                      </div>
+                      <div class="feature-item" data-aos="fade-right" data-aos-delay="1000">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Comprehensive student support</span>
+                      </div>
+                    </div>
+                    <div class="highlights-cta">
+                      <a href="#" class="cta-btn primary">Explore Programs</a>
+                      <a href="#" class="cta-btn secondary">Download Brochure</a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="highlights-gallery">
+                    <div class="gallery-grid">
+                      <div class="gallery-item large" data-aos="zoom-in" data-aos-delay="800">
+                        <img src="/static/College/assets/img/education/campus-3.webp" alt="Campus Life" class="img-fluid" loading="lazy">
+                        <div class="gallery-overlay">
+                          <h5>Modern Campus</h5>
+                        </div>
+                      </div>
+                      <div class="gallery-item small" data-aos="zoom-in" data-aos-delay="900">
+                        <img src="/static/College/assets/img/education/students-5.webp" alt="Students" class="img-fluid" loading="lazy">
+                        <div class="gallery-overlay">
+                          <h6>Student Life</h6>
+                        </div>
+                      </div>
+                      <div class="gallery-item small" data-aos="zoom-in" data-aos-delay="1000">
+                        <img src="/static/College/assets/img/education/teacher-7.webp" alt="Faculty" class="img-fluid" loading="lazy">
+                        <div class="gallery-overlay">
+                          <h6>Expert Faculty</h6>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Stats Section -->
+
+  <!-- Announcements Section -->
+<section id="announcements" class="events section">
+
+  <!-- Section Title -->
+  <div class="container section-title" data-aos="fade-up">
+    <h2>Latest Announcements</h2>
+    <p>Stay informed with the latest updates, notices, and important messages from the department.</p>
+  </div>
+
+  <div class="container" data-aos="fade-up" data-aos-delay="100">
+    <div class="row g-4">
+
+      {% for note in data %}
+      <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="{{ forloop.counter0|add:200 }}">
+        <div class="event-item">
+          <div class="event-image">
+            <div class="event-date-overlay">
+              <span class="date">{{ note.updated_at|date:"M" }}<br>{{ note.updated_at|date:"d" }}</span>
+            </div>
+          </div>
+          <div class="event-details">
+            <div class="event-category">
+              <span class="badge academic">Announcement</span>
+              <span class="event-time">{{ note.updated_at|date:"g:i A" }}</span>
+            </div>
+            <h3>{{ note.title }}</h3>
+            <p>{{ note.message|truncatewords:20 }}</p>
+            <div class="event-info">
+              <div class="info-row">
+                <i class="bi bi-calendar-event"></i>
+                <span>Posted on {{ note.updated_at|date:"F j, Y" }}</span>
+              </div>
+              <div class="info-row">
+                <i class="bi bi-megaphone"></i>
+                <span>Department Notice</span>
+              </div>
+            </div>
+            <div class="event-footer">
+              <a href="#" class="register-btn">Read More</a>
+              <div class="event-share">
+                <i class="bi bi-share"></i>
+                <i class="bi bi-heart"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center">
+        <p class="text-muted">No announcements available at the moment.</p>
+      </div>
+      {% endfor %}
+
+    </div>
+
+    <div class="events-navigation" data-aos="fade-up" data-aos-delay="500">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">All</button>
+            <button class="filter-tab" data-filter="academic">Academic</button>
+            <button class="filter-tab" data-filter="exam">Exam</button>
+            <button class="filter-tab" data-filter="general">General</button>
+          </div>
+        </div>
+        <div class="col-md-4 text-end">
+          <a href="/staff_view_announce/" class="view-calendar-btn">
+            <i class="bi bi-megaphone-fill"></i>
+            View All Announcements
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section><!-- /Announcements Section -->
+
+
+
+  </main>
+
+  <footer id="footer" class="footer position-relative light-background">
+
+  <div class="container footer-top">
+    <div class="row gy-4">
+
+      <!-- About BCA Connect -->
+      <div class="col-lg-4 col-md-6 footer-about">
+        <a href="/" class="logo d-flex align-items-center">
+          <span class="sitename">BCA Connect</span>
+        </a>
+        <div class="footer-contact pt-3">
+          <p>Department of Computer Applications</p>
+          <p>XYZ College, Calicut, Kerala</p>
+          <p class="mt-3"><strong>Support:</strong> <span>+91 98765 43210</span></p>
+          <p><strong>Email:</strong> <span>studenthelp@bcaconnect.in</span></p>
+        </div>
+        <div class="social-links d-flex mt-4">
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-linkedin"></i></a>
+          <a href="#"><i class="bi bi-youtube"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-lg-2 col-md-3 footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="/staff_welcome/">Dashboard</a></li>
+          <li><a href="/staff_view_feedback/">Feedback</a></li>
+        </ul>
+      </div>
+
+      <!-- Learning Resources -->
+      <div class="col-lg-2 col-md-3 footer-links">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="/staff_view_notes/">Study Materials</a></li>
+          <li><a href="/staff_view_assignments/">Assignments</a></li>
+          <li><a href="/staff_view_exams/">Exam Schedule</a></li>
+          <li><a href="/staff_view_results/">Results</a></li>
+          <li><a href="/staff_view_attendance/">Attendance</a></li>
+        </ul>
+      </div>
+
+      <!-- Staff Support -->
+      <div class="col-lg-2 col-md-3 footer-links">
+        <h4>Staff Support</h4>
+        <ul>
+          <li><a href="/staff_view_profile/">My Profile</a></li>
+          <li><a href="#">Help & FAQs</a></li>
+          <li><a href="/logout/">Logout</a></li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="container copyright text-center mt-4">
+    <p>© <strong class="px-1 sitename">BCA Connect</strong> | Empowering Students, One Click at a Time</p>
+    <div class="credits">
+      Built  by the Department of Computer Applications, XYZ College
+    </div>
+  </div>
+
+</footer>
+
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/College/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/College/assets/vendor/php-email-form/validate.js"></script>
+  <script src="/static/College/assets/vendor/aos/aos.js"></script>
+  <script src="/static/College/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/College/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="/static/College/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="/static/College/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/College/assets/vendor/glightbox/js/glightbox.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="/static/College/assets/js/main.js"></script>
+
+</body>
+
+</html>

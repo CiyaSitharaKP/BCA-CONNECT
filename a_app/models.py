@@ -105,6 +105,12 @@ class calender(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     
-
+class attendance(models.Model):
+    STUDENT = models.ForeignKey(studentdata, on_delete=models.CASCADE)
+    date = models.DateField()
+    is_present = models.BooleanField(default=False)
+    STAFF = models.ForeignKey(staffdata, on_delete=models.CASCADE)
+    SEM = models.ForeignKey(semester, on_delete=models.CASCADE)
+    YEAR = models.ForeignKey(academicyear, on_delete=models.CASCADE)
     
     

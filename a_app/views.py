@@ -7,6 +7,11 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from datetime import datetime, timedelta
 from collections import defaultdict
+from django.core.mail import send_mail
+from django.conf import settings
+import csv
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 # Create your views here.
 
@@ -46,7 +51,7 @@ def logoutpage(request):
 @login_required(login_url="/")  
 def admin_welcome(request):
     data = announcements.objects.all().order_by('-updated_at')[:5]
-    return render(request,'a_welcome.html',{"data":data})
+    return render(request,'admin/a_welcome.html',{"data":data})
 
 @login_required(login_url="/") 
 def admin_add_staff(request):
@@ -84,12 +89,40 @@ def admin_add_staff(request):
         '''<script>alert("New staff added successfully.");window.location="/admin_add_staff"</script>'''
         )
     else :
-        return render(request,'a_addstaff.html')
+        return render(request,'admin/a_addstaff.html')
 
 @login_required(login_url="/") 
 def admin_view_staff(request):
-    data = staffdata.objects.all()
-    return render(request,'a_viewstaff.html',{"data":data})
+    staffs_list = staffdata.objects.all()
+    paginator = Paginator(staffs_list, 4)
+    page_number = request.GET.get('page')
+    data = paginator.get_page(page_number)
+    return render(request,'admin/a_viewstaff.html',{"data":data})
+
+@login_required(login_url="/")
+def search_staff(request):
+    query = request.GET.get('item', '')
+    results = staffdata.objects.filter(
+        Q(name__icontains=query) | 
+        Q(email__icontains=query) | 
+        Q(phoneno__icontains=query) | 
+        Q(design__icontains=query)
+    )
+    
+    data = []
+    for staff in results:
+        data.append({
+            'id': staff.id,
+            'name': staff.name,
+            'email': staff.email,
+            'phoneno': staff.phoneno,
+            'design': staff.design,
+            'gender': staff.gender,
+            'dob': staff.dob.strftime('%Y-%m-%d') ,
+            'photo_url': staff.photo.url if staff.photo else ''
+        })
+    
+    return JsonResponse({'data': data})
 
 @login_required(login_url="/") 
 def admin_edit_staff(request,id):
@@ -120,7 +153,7 @@ def admin_edit_staff(request,id):
         '''<script>alert("Data updated successfully.");window.location="/admin_view_staff"</script>'''
         )
     else :
-        return render(request,'a_editstaff.html',{"data":ob})
+        return render(request,'admin/a_editstaff.html',{"data":ob})
 
 @login_required(login_url="/") 
 def admin_delete_staff(request,id):
@@ -175,12 +208,42 @@ def admin_add_student(request):
         '''<script>alert("New student added successfully.");window.location="/admin_add_student"</script>'''
         )
     else :
-        return render(request,'a_addstudent.html',{"semesters":sems,"years":years})
+        return render(request,'admin/a_addstudent.html',{"semesters":sems,"years":years})
 
 @login_required(login_url="/") 
 def admin_view_student(request):
-    data = studentdata.objects.all()
-    return render(request,'a_viewstudent.html',{"data":data})
+    students_list = studentdata.objects.all()
+    paginator = Paginator(students_list, 6)
+    page_number = request.GET.get('page')
+    data = paginator.get_page(page_number)
+    return render(request,'admin/a_viewstudent.html',{"data":data})
+
+@login_required(login_url="/")
+def search_student(request):
+    query = request.GET.get('item', '')
+    results = studentdata.objects.filter(
+        Q(name__icontains=query) | 
+        Q(email__icontains=query) | 
+        Q(phoneno__icontains=query) | 
+        Q(rollno__icontains=query) 
+    )
+    
+    data = []
+    for student in results:
+        data.append({
+            'id': student.id,
+            'name': student.name,
+            'email': student.email,
+            'rollno':student.rollno,
+            'phoneno': student.phoneno,
+            'sem': student.SEM.sem,
+            'year':student.YEAR.year,
+            'gender': student.gender,
+            'dob': student.dob.strftime('%Y-%m-%d'),
+            'photo_url': student.photo.url if student.photo else ''
+        })
+    
+    return JsonResponse({'data': data})
 
 @login_required(login_url="/") 
 def admin_edit_student(request,id):
@@ -217,7 +280,7 @@ def admin_edit_student(request,id):
         '''<script>alert("Data updated successfully.");window.location="/admin_view_student"</script>'''
         )
     else :
-        return render(request,'a_editstudent.html',{"data":ob,"semesters":sems,"years":years})
+        return render(request,'admin/a_editstudent.html',{"data":ob,"semesters":sems,"years":years})
 
 @login_required(login_url="/") 
 def admin_delete_student(request,id):
@@ -256,12 +319,39 @@ def admin_add_subject(request):
         '''<script>alert("New subject added successfully.");window.location="/admin_add_subject"</script>'''
         )
     else :
-        return render(request,'a_addsub.html',{"semesters":sems})
+        return render(request,'admin/a_addsub.html',{"semesters":sems})
 
 @login_required(login_url="/") 
 def admin_view_subject(request):
-    data = subjectdata.objects.all()
-    return render(request,'a_viewsub.html',{"data":data})
+    subjects_list = subjectdata.objects.all()
+    paginator = Paginator(subjects_list, 4)  # 4 items per page
+    page_number = request.GET.get('page')
+    data = paginator.get_page(page_number)
+    return render(request,'admin/a_viewsub.html',{"data":data})
+
+@login_required(login_url="/")
+def search_subject(request):
+    query = request.GET.get('item', '')
+    results = subjectdata.objects.filter(
+        Q(name__icontains=query) | 
+        Q(code__icontains=query) | 
+        Q(syllabus__icontains=query) |
+        Q(SEM__sem__icontains=query) |
+        Q(STAFF__name__icontains=query)
+    )
+    
+    data = []
+    for subject in results:
+        data.append({
+            'id': subject.id,
+            'name': subject.name,
+            'code': subject.code,
+            'syllabus': subject.syllabus,
+            'sem': subject.SEM.sem if subject.SEM else '',
+            'staff_name': subject.STAFF.name if subject.STAFF else 'Not Assigned'
+        })
+    
+    return JsonResponse({'data': data})
 
 @login_required(login_url="/") 
 def admin_edit_subject(request,id):
@@ -285,7 +375,7 @@ def admin_edit_subject(request,id):
         '''<script>alert("Data updated successfully.");window.location="/admin_view_subject"</script>'''
         )
     else :
-        return render(request,'a_editsub.html',{"data":ob,"semesters":sems,"staffs":staffs})
+        return render(request,'admin/a_editsub.html',{"data":ob,"semesters":sems,"staffs":staffs})
 
 @login_required(login_url="/") 
 def admin_delete_subject(request,id):
@@ -316,7 +406,7 @@ def admin_assign_subject(request):
             '''<script>alert("Subject assigned successfully.");window.location="/admin_assign_subject"</script>'''
         )
     else:
-        return render(request, 'a_assignsub.html', {"staffs": staffs, "semesters": sems})
+        return render(request, 'admin/a_assignsub.html', {"staffs": staffs, "semesters": sems})
         
 @login_required(login_url="/")
 def get_subjects_by_semester_staff(request):
@@ -334,7 +424,7 @@ def get_subjects_by_semester_staff(request):
 @login_required(login_url='/')
 def admin_view_feedback(request):
     data = feedback.objects.all().order_by("-created_at")
-    return render(request,'a_viewfeed.html',{"data":data})
+    return render(request,'admin/a_viewfeed.html',{"data":data})
 
 @login_required(login_url='/')
 def admin_reply_feedback(request):
@@ -407,7 +497,7 @@ def admin_add_timetable(request):
         )
 
     else:
-        return render(request, 'a_addtt.html', {"subjects": subs, "semesters": sems})
+        return render(request, 'admin/a_addtt.html', {"subjects": subs, "semesters": sems})
 
 
 @login_required(login_url="/")
@@ -430,7 +520,7 @@ def admin_view_timetable(request):
     semesters = semdata.objects.all()
     timetables = timetable.objects.select_related("SUBJECT", "SEM")
     timetables = sorted(timetables, key=lambda x: (day_order.get(x.day, 99), x.start_time))
-    return render(request, "a_viewtt.html", {"semesters": semesters,"timetables": timetables})
+    return render(request, "admin/a_viewtt.html", {"semesters": semesters,"timetables": timetables})
     
 @login_required(login_url='/')
 def admin_edit_timetable(request, id):
@@ -473,7 +563,7 @@ def admin_edit_timetable(request, id):
             '''<script>alert("Updated successfully");window.location="/admin_view_timetable/";</script>'''
         )
     else:
-        return render(request, 'a_edittt.html', {
+        return render(request, 'admin/a_edittt.html', {
             "data": ob,
             "semesters": semesters,
             "subjects": subjects,
@@ -513,12 +603,12 @@ def admin_add_calender(request):
                 '''<script>alert("Event added successfully");window.location="/admin_add_events"</script>'''
             )
     else :
-        return render(request,'a_addcal.html',{"years":years})
+        return render(request,'admin/a_addcal.html',{"years":years})
     
 @login_required(login_url='/')
 def admin_view__years(request):
     data = academicyear.objects.order_by('-year')
-    return render(request, "a_viewyear.html", {"data": data})
+    return render(request, "admin/a_viewyear.html", {"data": data})
 
    
 @login_required(login_url='/')
@@ -547,7 +637,7 @@ def admin_view_calender(request, id):
         "July", "August", "September", "October", "November", "December"
     ]
 
-    return render(request, "a_viewcal.html", {
+    return render(request, "admin/a_viewcal.html", {
         "year": ob,
         "years": years,
         "months": months,
@@ -577,7 +667,7 @@ def admin_edit_calender(request,id):
                 '''<script>alert("Event updated successfully");window.location="/admin_view_calender"</script>'''
             )
     else :
-        return render(request,'a_editcal.html',{"data":ob,"years":years})
+        return render(request,'admin/a_editcal.html',{"data":ob,"years":years})
 
 @login_required(login_url='/')
 def admin_delete_calender(request,id):
@@ -603,12 +693,33 @@ def admin_add_announce(request):
                 '''<script>alert("Data added successfully");window.location="/admin_add_announcements"</script>'''
             )
     else : 
-        return render(request,'a_addannounce.html')
+        return render(request,'admin/a_addannounce.html')
 
 @login_required(login_url='/')
 def admin_view_announce(request):
-    data = announcements.objects.all()
-    return render(request,'a_viewannounce.html',{"data":data})
+    announcements_list = announcements.objects.all().order_by('-updated_at')
+    paginator = Paginator(announcements_list, 3)
+    page_number = request.GET.get('page')
+    data = paginator.get_page(page_number)
+    return render(request,'admin/a_viewannounce.html',{"data":data})
+
+def search_announce(request):
+    query = request.GET.get('item', '')
+    results = announcements.objects.filter(Q(title__icontains=query) | Q(message__icontains=query))
+    data = []
+
+    for note in results:
+        data.append({
+            'id': note.id,
+            'title': note.title,
+            'message': note.message,
+            'month': note.updated_at.strftime('%b'),
+            'day': note.updated_at.strftime('%d'),
+            'time': note.updated_at.strftime('%I:%M %p'),
+            'full_date': note.updated_at.strftime('%B %d, %Y'),
+        })
+
+    return JsonResponse({'data': data}, safe=False)
 
 @login_required(login_url='/')
 def admin_edit_announce(request,id):
@@ -623,7 +734,7 @@ def admin_edit_announce(request,id):
                 '''<script>alert("Data updated successfully");window.location="/admin_view_announcements"</script>'''
             )
     else : 
-        return render(request,'a_editannounce.html',{"data":ob})
+        return render(request,'admin/a_editannounce.html',{"data":ob})
     
 @login_required(login_url='/')
 def admin_delete_announce(request,id):
@@ -656,7 +767,7 @@ def admin_change_pass(request):
                 '''<script>alert("Password changed successfully");window.location="/"</script>'''
             )
     else :
-        return render(request, 'a_changepass.html')
+        return render(request, 'admin/a_changepass.html')
     
     
  #STAFF   
@@ -666,18 +777,18 @@ def admin_change_pass(request):
 def staff_welcome(request):
     data = announcements.objects.all().order_by('-updated_at')[:5]
     ob = staffdata.objects.get(USER = request.user)
-    return render(request,'s_welcome.html',{"data":data,"ob":ob})
+    return render(request,'staff/s_welcome.html',{"data":data,"ob":ob})
 
 @login_required(login_url="/") 
 def staff_view_profile(request):
     data = staffdata.objects.get(USER = request.user)
-    return render(request,'s_viewprof.html',{"data":data})
+    return render(request,'staff/s_viewprof.html',{"data":data})
 
 @login_required(login_url="/") 
 def staff_view_subject(request):
     a = staffdata.objects.get(USER = request.user)
     data = subjectdata.objects.filter(STAFF = a)
-    return render(request,'s_viewsub.html',{"data":data})
+    return render(request,'staff/s_viewsub.html',{"data":data,"ob":a})
 
 @login_required(login_url='/')
 def staff_add_notes(request):
@@ -712,9 +823,10 @@ def staff_add_notes(request):
             '''<script>alert("Study Materials added successfully");window.location="/staff_add_notes"</script>'''
         )
 
-    return render(request, 's_addnotes.html', {
+    return render(request, 'staff/s_addnotes.html', {
         "subjects": subs,
-        "semesters": sems
+        "semesters": sems,
+        "ob":staff
     })
 
 
@@ -730,7 +842,7 @@ def get_subjects_by_semester_notes(request):
 def staff_view_notes(request):
     a = staffdata.objects.get(USER = request.user)
     data = studymaterials.objects.filter(STAFF = a)
-    return render(request,'s_viewnotes.html',{"data":data})
+    return render(request,'staff/s_viewnotes.html',{"data":data,"ob":a})
 
 @login_required(login_url='/')
 def staff_edit_notes(request,id):
@@ -753,7 +865,7 @@ def staff_edit_notes(request,id):
                 '''<script>alert("Study Materials updated successfully");window.location="/staff_view_notes"</script>'''
             )
     else :
-        return render(request,'s_editnotes.html',{"subjects":subs,"semesters":sems,"data":ob})
+        return render(request,'staff/s_editnotes.html',{"subjects":subs,"semesters":sems,"data":ob,"ob":staff})
 
 @login_required(login_url='/')
 def staff_delete_notes(request,id):
@@ -795,7 +907,7 @@ def staff_add_assignments(request):
                 '''<script>alert("Assignment added successfully");window.location="/staff_add_assignments"</script>'''
             )
     else:
-        return render(request,'s_addassign.html',{"semesters":sems,"subjects":subs})
+        return render(request,'staff/s_addassign.html',{"semesters":sems,"subjects":subs,"ob":staff})
     
 @login_required(login_url="/")
 def get_subjects_by_semester_assignments(request):
@@ -814,7 +926,7 @@ def get_subjects_by_semester_assignments(request):
 def staff_view_assignments(request):
     staff = staffdata.objects.get(USER = request.user)
     data = assignment.objects.filter(STAFF = staff)
-    return render(request,'s_viewassign.html',{"data":data})
+    return render(request,'staff/s_viewassign.html',{"data":data,"ob":staff})
 
 
 @login_required(login_url='/')
@@ -839,7 +951,7 @@ def staff_edit_assignments(request,id):
                 '''<script>alert("Assignment updated successfully");window.location="/staff_view_assignments"</script>'''
             )
     else:
-        return render(request,'s_editassign.html',{"semesters":sems,"subjects":subs,"data":ob})
+        return render(request,'staff/s_editassign.html',{"semesters":sems,"subjects":subs,"data":ob,"ob":staff})
 
 @login_required(login_url='/')
 def staff_delete_assignments(request,id):
@@ -850,8 +962,9 @@ def staff_delete_assignments(request,id):
 
 @login_required(login_url='/')
 def staff_view_submitted_assignments(request,id):
+    staff = staffdata.objects.get(USER=request.user)
     data = assignmentdata.objects.filter(ASSIGN_id=id)
-    return render(request,'s_viewsubassign.html',{"data":data})
+    return render(request,'staff/s_viewsubassign.html',{"data":data,"ob":staff})
 
 @login_required(login_url='/')
 def staff_add_exam(request):
@@ -909,7 +1022,7 @@ def staff_add_exam(request):
             '''<script>alert("Exam added successfully");window.location="/staff_add_exams"</script>'''
         )
 
-    return render(request, 's_addexam.html', {"semesters": sems, "subjects": subs})
+    return render(request, 'staff/s_addexam.html', {"semesters": sems, "subjects": subs,"ob":staff})
 
 
             
@@ -918,7 +1031,7 @@ def staff_view_exam(request):
     staff = staffdata.objects.get(USER = request.user)
     sub = subjectdata.objects.filter(STAFF = staff)
     data = examdata.objects.filter(SUBJECT__in = sub)
-    return render(request,'s_viewexam.html',{"data":data})
+    return render(request,'staff/s_viewexam.html',{"data":data,"ob":staff})
 
 @login_required(login_url='/')
 def staff_edit_exam(request, id):
@@ -966,10 +1079,11 @@ def staff_edit_exam(request, id):
             '''<script>alert("Exam updated successfully");window.location="/staff_view_exams"</script>'''
         )
 
-    return render(request, 's_editexam.html', {
+    return render(request, 'staff/s_editexam.html', {
         "semesters": sems,
         "subjects": subs,
-        "data": ob
+        "data": ob,
+        "ob":staff
     })
 
 
@@ -990,6 +1104,7 @@ def staff_add_result(request):
     context = {
         "semesters": sems,
         "subjects": subs,
+        "ob":staff
     }
 
     if request.method == 'POST':
@@ -1018,7 +1133,8 @@ def staff_add_result(request):
             return HttpResponse(
                 '''<script>alert("Result already added for this exam and student");window.location="/staff_add_results"</script>'''
             )
-
+        if not remarks:
+            remarks = "-"
         ob = examresult(EXAM=exam_obj, STUDENT=student_obj, marks=int(marks), remarks=remarks)
         ob.save()
 
@@ -1026,7 +1142,7 @@ def staff_add_result(request):
             '''<script>alert("Result added successfully");window.location="/staff_add_results"</script>'''
         )
 
-    return render(request, 's_addresults.html', context)
+    return render(request, 'staff/s_addresults.html', context)
 
 
 @login_required(login_url="/")
@@ -1108,16 +1224,18 @@ def staff_view_result(request):
         except semdata.DoesNotExist:
             results = []
 
-    return render(request, 's_viewresult.html', {
+    return render(request, 'staff/s_viewresult.html', {
         "semesters": semesters,
-        "results": results
+        "results": results,
+        "ob":staff
     })
 
    
 @login_required(login_url='/')
 def staff_view_feedback(request):
+    staff = staffdata.objects.get(USER=request.user)
     data = feedback.objects.all().order_by("-created_at")
-    return render(request,'s_viewfeed.html',{"data":data})
+    return render(request,'staff/s_viewfeed.html',{"data":data,"ob":staff})
 
 @login_required(login_url='/')
 def staff_reply_feedback(request):
@@ -1142,6 +1260,7 @@ def staff_view_student_performance(request):
     sems = semdata.objects.filter(SEM__in=subjects.values_list('SEM', flat=True)).distinct()
     context = {
         'semesters': sems,
+        'ob': staff,
     }
 
     if request.method == 'POST':
@@ -1171,9 +1290,11 @@ def staff_view_student_performance(request):
                 'assignments': assignments,
                 'internal_results': internal_results,
                 'regular_results': regular_results,
+                'submitted': True, 
             })
 
-    return render(request, 's_stperf.html', context)
+    return render(request, 'staff/s_stperf.html', context)
+
 
            
 
@@ -1225,7 +1346,7 @@ Students Enrolled
         response.write(content)
         return response
 
-    return render(request, 's_reports.html', {"semesters": semesters})
+    return render(request, 'staff/s_reports.html', {"semesters": semesters,"ob":staff})
 
 @login_required(login_url="/")
 def get_subjects_by_semester_and_staff(request):
@@ -1240,21 +1361,167 @@ def get_subjects_by_semester_and_staff(request):
 
 @login_required(login_url='/')
 def staff_view__years(request):
+    staff = staffdata.objects.get(USER=request.user)
     data = academicyear.objects.order_by('-year')
-    return render(request, "s_viewyear.html", {"data": data})
+    return render(request, "staff/s_viewyear.html", {"data": data,"ob":staff})
+
+
+@login_required(login_url='/')
+def staff_add_attendance(request):
+    staff = staffdata.objects.get(USER=request.user)
+    semesters = semester.objects.all()
+    years = academicyear.objects.all()
+    if request.method == 'POST':
+        sem_id = request.POST['sem']
+        year_id = request.POST['year']
+        attendance_date = request.POST['date']
+        present_ids = request.POST.getlist('present_students')
+   
+        students = studentdata.objects.filter(SEM_id=sem_id, YEAR_id=year_id)
+
+        for student in students:
+            is_present = str(student.id) in present_ids
+            ob = attendance()
+            ob.STUDENT=student
+            ob.date=attendance_date
+            ob.is_present=is_present
+            ob.STAFF=staff
+            ob.SEM_id=sem_id
+            ob.YEAR_id=year_id
+            ob.save()
+
+            message = f"""
+Dear {student.name},
+You were marked absent on {attendance_date}.
+Please contact {staff.name} at {staff.email} if you have any questions.
+
+Regards,
+BCA Connect
+"""
+            
+            if not is_present:
+                send_mail(
+                subject="Absence Notification",
+                message=message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                recipient_list=[student.email],
+                fail_silently=False,
+            )
+
+        return HttpResponse(
+                '''<script>alert("Attendance submitted and emails sent to absentees");window.location="/staff_add_attendance/"</script>'''
+            )
+
+    return render(request, 'staff/s_addatt.html', {
+        'semesters': semesters,
+        'years': years,
+        'ob':staff
+    })
+
+@login_required(login_url='/')
+def get_students_by_sem_year(request):
+    sem_id = request.GET.get('sem_id')
+    year_id = request.GET.get('year_id')
+
+    if sem_id and year_id:
+        students = studentdata.objects.filter(SEM_id=sem_id, YEAR_id=year_id)
+        data = [
+            {
+                'id': student.id,
+                'name': student.name,
+                'rollno': student.rollno,
+                'email': student.email
+            }
+            for student in students
+        ]
+        return JsonResponse(data, safe=False)
+
+@login_required(login_url='/')  
+def staff_view_attendance(request):
+    staff = staffdata.objects.get(USER=request.user)
+    semesters = semester.objects.all()
+    years = academicyear.objects.all()
+    records = []
+    submitted = False
+
+    if request.method == 'POST':
+        submitted = True
+        sem_id = request.POST['sem']
+        year_id = request.POST['year']
+        date = request.POST['date']
+
+        records = attendance.objects.filter(
+            SEM_id=sem_id,
+            YEAR_id=year_id,
+            date=date
+        ).select_related('STUDENT')
+
+    return render(request, 'staff/s_viewatt.html', {
+        'semesters': semesters,
+        'years': years,
+        'records': records,
+        'submitted': submitted,
+        'ob':staff
+    })
+
+@login_required(login_url='/')
+def staff_export_attendance(request):
+    sem_id = request.GET.get('sem')
+    year_id = request.GET.get('year')
+    date = request.GET.get('date')
+
+    records = attendance.objects.filter(
+        SEM_id=sem_id,
+        YEAR_id=year_id,
+        date=date
+    ).select_related('STUDENT')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachment; filename="attendance_{date}.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Sl No', 'Student Name', 'Roll No', 'Date', 'Status'])
+
+    for i, record in enumerate(records, start=1):
+       writer.writerow([
+            i,
+            record.STUDENT.name,
+            record.STUDENT.rollno,
+            f"' {record.date} '",  
+            'Present' if record.is_present else 'Absent'
+        ])
+
+    return response
+
+@login_required(login_url='/')
+def staff_view_announce(request):
+    announcements_list = announcements.objects.all().order_by('-updated_at')
+    paginator = Paginator(announcements_list, 3)
+    page_number = request.GET.get('page')
+    data = paginator.get_page(page_number)
+    return render(request,'staff/s_viewann.html',{"data":data})
 
 #STUDENT
-    
+
 @login_required(login_url="/")  
 def student_welcome(request):
-    data = announcements.objects.all().order_by('-updated_at')[:5]
-    ob = studentdata.objects.get(USER = request.user)
-    return render(request,'st_welcome.html',{"data":data,"ob":ob})
+    data = announcements.objects.all().order_by('-updated_at')[:3]
+    ob = studentdata.objects.get(USER=request.user)
+    return render(request, 'student/st_welcome.html', {"data": data,"ob": ob})
+
+@login_required(login_url="/")  
+def student_view_announcements(request):
+    ob = studentdata.objects.get(USER=request.user)
+    announcements_list = announcements.objects.all().order_by('-updated_at')
+    paginator = Paginator(announcements_list, 3)
+    page_number = request.GET.get('page')
+    data = paginator.get_page(page_number)
+    return render(request, 'student/st_viewann.html', {"data": data,"ob": ob})
 
 @login_required(login_url="/") 
 def student_view_profile(request):
     data = studentdata.objects.get(USER = request.user)
-    return render(request,'st_viewprofile.html',{"data":data})
+    return render(request,'student/st_viewprofile.html',{"data":data})
     
 @login_required(login_url='/')   
 def student_view_notes(request):
@@ -1262,11 +1529,21 @@ def student_view_notes(request):
     s = st.SEM
     subs = subjectdata.objects.filter(SEM=s)
     data = None  
+    submitted = False 
+
     if request.method == 'POST':
-        sub = request.POST.get('sub')
+        sub = request.POST['sub']
         if sub:
             data = studymaterials.objects.filter(SUBJECT_id=sub)
-    return render(request, 'st_viewnotes.html', {"subjects": subs, "data": data})
+            submitted = True
+
+    return render(request, 'student/st_viewnotes.html', {
+        "subjects": subs,
+        "data": data,
+        "submitted": submitted,
+        "ob":st
+    })
+
 
     
 @login_required(login_url='/')   
@@ -1274,7 +1551,7 @@ def student_view_subjects(request):
     st = studentdata.objects.get(USER = request.user)
     s = st.SEM
     subs = subjectdata.objects.filter(SEM = s)
-    return render(request,'st_viewsub.html',{"data":subs})   
+    return render(request,'student/st_viewsub.html',{"data":subs,"ob":st})   
     
 @login_required(login_url='/')
 def student_view_timetable(request):
@@ -1289,8 +1566,9 @@ def student_view_timetable(request):
     day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     ordered_data = [(day, grouped_data.get(day, [])) for day in day_order]
 
-    return render(request, 'st_viewtt.html', {
-        "ordered_data": ordered_data
+    return render(request, 'student/st_viewtt.html', {
+        "ordered_data": ordered_data,
+        "ob":st
     })
 
 
@@ -1300,6 +1578,7 @@ def student_view_assignments(request):
     subs = subjectdata.objects.filter(SEM=st.SEM)
     data = []
     today = timezone.now().date()
+    submitted = False
 
     if request.method == 'POST':
         sub = request.POST.get('sub')
@@ -1307,8 +1586,9 @@ def student_view_assignments(request):
             for a in assignment.objects.filter(SUBJECT_id=sub):
                 a.is_urgent = (a.deadline - today).days <= 3
                 data.append(a)
+            submitted = True
 
-    return render(request, 'st_viewassign.html', {"subjects": subs, "data": data})
+    return render(request, 'student/st_viewassign.html', {"subjects": subs, "data": data,"submitted": submitted,"ob":st})
 
 @login_required(login_url='/')
 def student_add_assignment(request):
@@ -1338,7 +1618,7 @@ def student_add_assignment(request):
                 '''<script>alert("Assignment submitted successfully");window.location="/student_add_assignments"</script>'''
             )
     else:
-        return render(request,'st_addassign.html',{"subjects":subs,"assigns":assigns})
+        return render(request,'student/st_addassign.html',{"subjects":subs,"assigns":assigns,"ob":st})
 
 @login_required(login_url='/')
 def get_assignments_by_subject(request):
@@ -1354,17 +1634,18 @@ def get_assignments_by_subject(request):
 def student_view_result(request):
     student = studentdata.objects.get(USER=request.user)
     data = examresult.objects.filter(STUDENT=student)
-    return render(request, 'st_viewresult.html', {"data": data})
+    return render(request, 'student/st_viewresult.html', {"data": data,"ob":student})
 
 
 @login_required(login_url='/')
 def student_view_feedback(request):
     st = studentdata.objects.get(USER = request.user)
     data = feedback.objects.filter(STUDENT = st)
-    return render(request,'st_viewfeed.html',{"data":data})
+    return render(request,'student/st_viewfeed.html',{"data":data,"ob":st})
 
 @login_required(login_url='/')
 def student_add_feedback(request):
+    st = studentdata.objects.get(USER = request.user)
     if request.method == 'POST':
         msg = request.POST.get('feedback')
         if not msg:
@@ -1378,7 +1659,7 @@ def student_add_feedback(request):
         return HttpResponse(
             '''<script>alert("Feedback submitted successfully");window.location="/student_add_feedback"</script>'''
         )
-    return render(request, 'st_addfeed.html')
+    return render(request, 'student/st_addfeed.html',{"ob":st})
 
 @login_required(login_url='/')
 def student_view_exams(request):
@@ -1391,14 +1672,14 @@ def student_view_exams(request):
         exam.is_upcoming = 0 <= (exam.date - today).days <= 3
         data.append(exam)
 
-    return render(request, 'st_viewexam.html', {"data": data})
+    return render(request, 'student/st_viewexam.html', {"data": data,"ob":student})
 
 
 @login_required(login_url='/')
 def student_view_internal(request):
     student = studentdata.objects.get(USER=request.user)
     data = examresult.objects.filter(STUDENT=student, EXAM__type="Internal")
-    return render(request, 'st_viewinternal.html', {"data": data})
+    return render(request, 'student/st_viewinternal.html', {"data": data,"ob":student})
 
 
 @login_required(login_url='/')
@@ -1430,11 +1711,36 @@ def student_view_calendar(request):
         "July", "August", "September", "October", "November", "December"
     ]
 
-    return render(request, "st_viewcal.html", {
+    return render(request, "student/st_viewcal.html", {
         "year": ob,
         "years": years,
         "months": months,
         "event_list": event_list,
         "events": events ,
-        "day_range": day_range   
+        "day_range": day_range,
+        "ob":student 
     })    
+    
+@login_required(login_url='/')    
+def student_view_attendance(request):
+    student = studentdata.objects.get(USER=request.user)
+    semesters = semester.objects.all()
+    year = academicyear.objects.get(id = student.YEAR_id)
+    records = []
+    submitted = False
+
+    if request.method == 'POST':
+        sem_id = request.POST['sem']
+        records = attendance.objects.filter(
+            STUDENT=student,
+            SEM_id=sem_id,
+            YEAR=year
+        ).order_by('date')
+        submitted = True
+
+    return render(request, 'student/st_viewatt.html', {
+        'semesters': semesters,
+        'records': records,
+        'submitted': submitted,
+        'ob':student
+    })
